@@ -4,17 +4,10 @@ const { ObjectId } = require("mongodb");
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  req.app.locals.db.collection('users').find().toArray()
+  req.app.locals.db.collection('users').find().project({password: false}).toArray()
   .then(results => {
-    let printHTML = '<div><h3>Users:</h3>'
-
-    for (i in results) {
-      printHTML += '<p>' + results[i]._id + ' - ' + results[i].name + ' - ' + results[i].email + '</p>'
-    }
-
-    printHTML += '</div>'
-
-    res.send(printHTML);
+    res.status(200).json(results)
+    
   })
 });
 
@@ -27,7 +20,7 @@ router.post('/', function(req, res, next) {
     if (result == null) {
       res.status(500).json("Can't find user")
     } else {
-      res.json(result)
+      res.status(200).json(result)
 
     }    
   })
@@ -37,7 +30,8 @@ router.post('/add', function(req, res, next) {
 
   req.app.locals.db.collection('users').insertOne(req.body)
   .then(result => {
-    console.log("1 user inserted" + result)
+    console.log("New user added" + result)
+    res.status(200).json(result)
   })
     
 
@@ -53,8 +47,7 @@ router.post('/login', function(req, res, next) {
       res.status(500).json("Can't find user")
     }
     else if (result.password === password) {
-      console.log("Welcome: ")
-      res.json(result)
+      res.status(200).json(result)
     }
     else {
       res.status(401).json("Incorrect password or username")

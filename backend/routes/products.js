@@ -6,18 +6,7 @@ const { ObjectId } = require("mongodb");
 router.get('/', function(req, res, next) {  
   req.app.locals.db.collection('products').find().toArray()
   .then(results => {
-    let printHTML = '<div><h3>Products:</h3>'
-
-    for (i in results) {
-      printHTML += '<p>' + results[i]._id + ' - ' + results[i].name +
-      ' - ' + results[i].description + ' - ' + results[i].price + 
-      ' - ' + results[i].lager + 
-      '</p>'
-    }
-
-    printHTML += '</div>'
-
-    res.send(printHTML);
+    res.status(200).json(results)
   })
 });
 
@@ -26,10 +15,8 @@ router.post('/add', function(req, res, next) {
   req.app.locals.db.collection('products').insertOne(req.body)
   .then(result => {
     console.log("New product added" + result)
+    res.status(200).json(result)
   })
-    
-
-  res.send('Product added');
 });
 
 router.get('/:productId', function(req, res, next) {
@@ -39,9 +26,9 @@ router.get('/:productId', function(req, res, next) {
   req.app.locals.db.collection("products").findOne({"_id": new ObjectId(productId)})
   .then(result => {
     if (result == null) {
-      res.status(500).json("Can't find products")
+      res.status(404).json("Can't find products")
     } else {
-      res.json(result)
+      res.status(200).json(result)
 
     }
   })
