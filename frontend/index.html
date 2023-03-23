@@ -19,11 +19,12 @@
           <input type="password" placeholder="Enter Password" name="loginpsw" required>
       
           <button id="loginButton" type="button">Login</button>
+          <a href="#registerForm" id="signUpLink">Not a member? Sign up here!</a>
         </div>
       </form>
     </div>
 
-    <div id="registerForm">
+    <div id="registerForm" style="display: none;">
       <form>
         <h2>Register:</h2>
         <div class="container">
@@ -41,14 +42,14 @@
       </form>
     </div>
 
-    <div>
+    <div id="userInfoCart" style="display: none;">
       <h2>Welcome:</h2>
-      <div id="userInfo"></div>
+      <div id="nameInfo"></div>
       <h2>Cart:</h2>
-      <div id="cartInfo">0 Products</div>
+      <div id="cartInfo">0 Products</div><button id="cartButton" type="button">Order</button>
     </div>
 
-    <div>
+    <div id="webshopDiv" style="display: none;">
       <h2>Products:</h2>
       <ul id="displayProdcuts"></ul>
     </div>

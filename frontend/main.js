@@ -1,5 +1,9 @@
 import './style.css';
 
+//Global variables
+let userId = '';
+let cart = []
+
 function init() {
   let loginUserBtn = document.querySelector("#loginButton");
   loginUserBtn.addEventListener('click', handleLoginButtonPress);
@@ -7,10 +11,14 @@ function init() {
   let registerUserBtn = document.querySelector("#registerButton");  
   registerUserBtn.addEventListener('click', handleRegisterButtonPress);
 
-  const cart = [{
-    
-  }
-  ]
+  let cartBtn = document.querySelector("#cartButton");
+  cartBtn.addEventListener('click', handleCartOrderButtonPress);
+
+  let signUpLink = document.querySelector('#signUpLink');
+  let registerForm = document.querySelector('#registerForm');
+  signUpLink.addEventListener('click', () => {
+    registerForm.style.display = 'block'    
+  })
 
   displayAllProducts()
 
@@ -36,7 +44,10 @@ function handleLoginButtonPress() {
     .then(data => {
           console.log(data)
           if (data.email) {
-            displayUserInfo(data.email)
+            openWebShop(data.name)
+            userId = data._id
+            console.log(userId)
+
           }
           else {
               console.log("Inloggning misslyckades, var vänlig och kontrollera användarnamn och lösenord.")
@@ -68,7 +79,7 @@ function handleRegisterButtonPress() {
     .then(data => {
           console.log(data)
           if (data.acknowledged) {
-            displayUserInfo('created new user')
+            alert('created new user - please log in to continue')
           }
           else {
               console.log("Register failed, var vänlig och kontrollera inputfälten.")
@@ -77,9 +88,18 @@ function handleRegisterButtonPress() {
     });
 }
 
+function openWebShop(userName) {
+  displayUserInfo(userName)
+  let webshopDiv = document.querySelector('#webshopDiv');
+  webshopDiv.style.display = 'block'
+  
+}
+
 function displayUserInfo(string) {
-  let userInfoDiv = document.querySelector('#userInfo');
-  userInfoDiv.innerHTML = string;
+  let userInfoCart = document.querySelector('#userInfoCart');
+  userInfoCart.style.display = 'block'
+  let nameInfo = document.querySelector('#nameInfo');
+  nameInfo.innerHTML = string;
 
 }
 
@@ -126,11 +146,52 @@ function setUpClicks() {
 }
 
 function handleAddProductClick(e) {
-  console.log(e.target.value)
+  const cartInfo = document.querySelector('#cartInfo')
+  cart.push(e.target.value);
+  cartInfo.innerHTML = cart.length + ' products'
 }
+
+function calculateCartOrder() {
+  const addAllProducts = {};
+  cart.forEach(function (x) { addAllProducts[x] = (addAllProducts[x] || 0) + 1; });
+  let allProductsOrder = []
+  for (const [key, value] of Object.entries(addAllProducts)) {
+    let singelProductOrder = {
+      "productId": key,
+      "quantity": value
+    }
+    allProductsOrder.push(singelProductOrder);
+  }
+  let finalOrder = 
+  {
+    "user": userId, 
+        "products": allProductsOrder
+  }
+
+  return finalOrder;
+}
+
+function handleCartOrderButtonPress() {
+  let sendOrderToServer = calculateCartOrder()
   
-
-
+  fetch("http://localhost:3000/api/orders/add", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      }, 
+      body: JSON.stringify(sendOrderToServer)
+    })
+    .then(res => res.json())
+    .then(data => {
+          console.log(data)
+          if (data.acknowledged) {
+            alert('Thank you for your order!')
+          }
+          else {
+            alert('Something went wrong!')
+          }
+    });
+}
 
 init()
 
