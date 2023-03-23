@@ -7,9 +7,52 @@
     <title>Vite App</title>
   </head>
   <body>
-    <div>
-      hello world
+    <h1>Jeppes Webshop</h1>
+    <div id="loginForm">
+      <form>
+        <h2>Login:</h2>
+        <div class="container">
+          <label for="loginemail"><b>Email</b></label>
+          <input type="email" placeholder="Enter email" name="loginemail" required>
+      
+          <label for="loginpsw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="loginpsw" required>
+      
+          <button id="loginButton" type="button">Login</button>
+        </div>
+      </form>
     </div>
+
+    <div id="registerForm">
+      <form>
+        <h2>Register:</h2>
+        <div class="container">
+          <label for="registername"><b>Name</b></label>
+          <input type="text" placeholder="Enter name" name="registername" required>
+
+          <label for="registeremail"><b>Email</b></label>
+          <input type="email" placeholder="Enter email" name="registeremail" required>
+      
+          <label for="registerpsw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="registerpsw" required>
+      
+          <button id="registerButton" type="button">Register</button>
+        </div>
+      </form>
+    </div>
+
+    <div>
+      <h2>Welcome:</h2>
+      <div id="userInfo"></div>
+      <h2>Cart:</h2>
+      <div id="cartInfo">0 Products</div>
+    </div>
+
+    <div>
+      <h2>Products:</h2>
+      <ul id="displayProdcuts"></ul>
+    </div>
+
     <script type="module" src="/main.js"></script>
   </body>
 </html>

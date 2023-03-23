@@ -6,6 +6,9 @@
 # @name getUsers
 GET http://localhost:3000/api/users
 
+// KLAR ** VG-NIVÅ ** KLAR
+
+
 ###
 
 // HÄMTA SPECIFIK USER // SKICKA HELA OBJEKTET
@@ -15,6 +18,8 @@ Content-Type: application/json
 {
   "id": "// ID PÅ EN SPECIFIK USER"
 }
+// KLAR ** VG-NIVÅ ** KLAR
+
 
 ###
 
@@ -28,6 +33,8 @@ Content-Type: application/json
   "password": "test"
 }
 
+// EJ KLAR - KRYPTERA LÖSENORD
+
 ###
 
 // LOGGA IN USER // VID FEL LÖSENORD SÅ SKALL SVARA MED 401
@@ -38,6 +45,7 @@ Content-Type: application/json
   "email": "// USER EMAIL",
   "password": "// USER PASSWORD"
 }
+// 401 KLAR - KRYPTERAT LÖSENORD EJ KLART!
 
 ###
 
@@ -48,10 +56,16 @@ Content-Type: application/json
 # @name getProducts
 GET http://localhost:3000/api/products
 
+// KLAR ** VG-NIVÅ ** KLAR
+
+
 ###
 
 // HÄMTA SPECIFIK PRODUKT
 GET http://localhost:3000/api/products/ // ID PÅ EN SPECIFIK PRODUKT
+
+// KLAR ** VG-NIVÅ ** KLAR
+
 
 ###
 

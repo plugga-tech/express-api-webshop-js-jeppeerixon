@@ -30,12 +30,8 @@ router.post('/add', function(req, res, next) {
 
   req.app.locals.db.collection('users').insertOne(req.body)
   .then(result => {
-    console.log("New user added" + result)
     res.status(200).json(result)
   })
-    
-
-  res.send('USERS ROUTE');
 });
 
 router.post('/login', function(req, res, next) {

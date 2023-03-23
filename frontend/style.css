@@ -1,0 +1,8 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  max-width: 50%;
+  margin: auto;
+}

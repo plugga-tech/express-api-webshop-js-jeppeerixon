@@ -6,6 +6,7 @@
 # @name getUsers
 GET http://localhost:3000/api/users
 
+// KLAR ** G-NIVÅ ** KLAR
 ###
 
 // HÄMTA SPECIFIK USER // SKICKA HELA OBJEKTET
@@ -13,9 +14,10 @@ POST http://localhost:3000/api/users/
 Content-Type: application/json
 
 {
-  "id": "// EN USER ID"
+  "id": "6419af28665a11660b32cc0c"
 }
 
+// KLAR ** G-NIVÅ ** KLAR
 ###
 
 // SKAPA USER
@@ -23,11 +25,12 @@ POST http://localhost:3000/api/users/add
 Content-Type: application/json
 
 {
-  "name": "Test Testsson",
-  "email": "test@mail.com",
-  "password": "test"
+  "name": "elin horn",
+  "email": "elin@mail.com",
+  "password": "elin"
 }
 
+// KLAR ** G-NIVÅ ** KLAR
 ###
 
 // LOGGA IN USER
@@ -35,10 +38,11 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "// EN USER EMAIL",
-  "password": "// EN USER EMAIL"
+  "email": "elin@mail.com",
+  "password": "elin"
 }
 
+// KLAR ** G-NIVÅ ** KLAR
 ###
 
 //
@@ -50,10 +54,11 @@ Content-Type: application/json
 # @name getProducts
 GET http://localhost:3000/api/products
 
+// KLAR ** G-NIVÅ ** KLAR
 ###
 
 // HÄMTA SPECIFIK PRODUKT
-GET http://localhost:3000/api/products/ // ID PÅ PRODUKT
+GET http://localhost:3000/api/products/6419ae30665a11660b32cc0a
 
 ###
 
@@ -62,10 +67,10 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Produkt 1",
-  "description": "Beskrivning av produkt 1",
-  "price": 100, 
-  "lager": 10
+  "name": "Chips",
+  "description": "Pringels hot spicy",
+  "price": 23, 
+  "lager": 54
 }
 
 ###
@@ -79,15 +84,15 @@ POST http://localhost:3000/api/orders/add
 Content-Type: application/json
 
 {
-  "user": "{{getUsers.response.body.$[0].id}}",
+  "user": "64197076307fff84c4192e95", 
       "products": [
     {
-      "productId": "// ID PÅ EN PRODUKT",
-      "quantity": 1
+      "productId": "6419ae30665a11660b32cc0a", 
+      "quantity": 2
     },
     {
-      "productId": "// ID PÅ EN PRODUKT",
-      "quantity": 2
+      "productId": "6419acc9665a11660b32cc09",
+      "quantity": 5
     }
   ]
 }
