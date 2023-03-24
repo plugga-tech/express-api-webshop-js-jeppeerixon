@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const crypto = require("crypto-js");
 const { ObjectId } = require("mongodb");
 
 /* GET users listing. */
@@ -28,7 +29,13 @@ router.post('/', function(req, res, next) {
 
 router.post('/add', function(req, res, next) {
 
-  req.app.locals.db.collection('users').insertOne(req.body)
+  let newUser = { name: req.body.name, email: req.body.email };
+  let passwordToSave = crypto.SHA3(req.body.password).toString();
+  newUser.password = passwordToSave;
+
+  console.log("new user", newUser);
+
+  req.app.locals.db.collection('users').insertOne(newUser)
   .then(result => {
     res.status(200).json(result)
   })
@@ -42,7 +49,7 @@ router.post('/login', function(req, res, next) {
     if (result == null) {
       res.status(500).json("Can't find user")
     }
-    else if (result.password === password) {
+    else if (crypto.SHA3(password).toString() == result.password) {
       res.status(200).json(result)
     }
     else {

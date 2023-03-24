@@ -7,13 +7,14 @@ var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/products');
 var ordersRouter = require('./routes/orders');
 var cors = require('cors');
+require('dotenv').config()
 
 var app = express();
 var base = '/api';
 
 //mongoDB connection
 const MongoClient = require('mongodb').MongoClient;
-MongoClient.connect('mongodb://127.0.0.1:27017', {
+MongoClient.connect(process.env.DATABASE_URL, {
     useUnifiedTopology: true
 }).then(client => {
     console.log('MongoDB connected!')

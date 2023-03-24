@@ -28,9 +28,9 @@ POST http://localhost:3000/api/users/add
 Content-Type: application/json
 
 {
-  "name": "Test Testsson",
-  "email": "test@mail.com",
-  "password": "test"
+  "name": "jesper eriksson",
+  "email": "jesper@mail.com",
+  "password": "jesper"
 }
 
 // EJ KLAR - KRYPTERA LÖSENORD
@@ -42,8 +42,8 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "// USER EMAIL",
-  "password": "// USER PASSWORD"
+  "email": "elin@mail.com",
+  "password": "elin"
 }
 // 401 KLAR - KRYPTERAT LÖSENORD EJ KLART!
 
@@ -148,7 +148,7 @@ POST http://localhost:3000/api/orders/user
 Content-Type: application/json
 
 {
-    "user": "// USER ID FÖR DEN SOM SKA VISA ORDERS"
+    "user": "641c5c86ea1274be927865fc"
 }
 ###
 

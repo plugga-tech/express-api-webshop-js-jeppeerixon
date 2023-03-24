@@ -20,6 +20,9 @@ function init() {
     registerForm.style.display = 'block'    
   })
 
+  let showOrderButton = document.querySelector('#showOrderButton')
+  showOrderButton.addEventListener('click', displayMyOrderButtonPress);
+
   displayAllProducts()
 
 }
@@ -173,6 +176,7 @@ function calculateCartOrder() {
 
 function handleCartOrderButtonPress() {
   let sendOrderToServer = calculateCartOrder()
+  console.log(sendOrderToServer)
   
   fetch("http://localhost:3000/api/orders/add", {
       method: "POST",
@@ -191,6 +195,43 @@ function handleCartOrderButtonPress() {
             alert('Something went wrong!')
           }
     });
+}
+
+function displayMyOrderButtonPress() {
+  let displayOrders = document.querySelector('#displayOrders');
+  displayOrders.style.display = 'block';
+
+  let theUser = {
+    user: userId
+  }
+
+  fetch("http://localhost:3000/api/orders/user", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      }, 
+      body: JSON.stringify(theUser)
+    })
+    .then(res => res.json())
+    .then(data => {
+          console.log(data)
+          if (data == null) {
+            displayOrders.innerHTML = 'no products to display'
+          }
+          else {
+            let printHTML = ''
+
+            for (let i in data) {
+              let bajs = data[i].products.map(x => x)
+              console.log(bajs)
+              printHTML += `<li> Order: ${data[i]._id} Prod: ${JSON.stringify(bajs)} </li>`
+            }
+        
+            displayOrders.innerHTML = printHTML;
+
+          }
+    });
+
 }
 
 init()
