@@ -41,7 +41,8 @@ function handleLoginButtonPress() {
       headers: {
           "Content-Type": "application/json",
       }, 
-      body: JSON.stringify(loginUser)
+      body: JSON.stringify(loginUser),
+      credentials: 'include'
     })
     .then(res => res.json())
     .then(data => {
@@ -95,6 +96,8 @@ function openWebShop(userName) {
   displayUserInfo(userName)
   let webshopDiv = document.querySelector('#webshopDiv');
   webshopDiv.style.display = 'block'
+  let ordersDiv = document.querySelector('#ordersDiv');
+  ordersDiv.style.display = 'block'
   
 }
 
@@ -113,7 +116,7 @@ function displayAllProducts() {
       method: "GET",
       headers: {
           "Content-Type": "application/json",
-      }
+      },
     })
     .then(res => res.json())
     .then(data => {

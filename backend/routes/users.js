@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const crypto = require("crypto-js");
 const { ObjectId } = require("mongodb");
+require('dotenv').config();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -42,7 +43,7 @@ router.post('/add', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-  const { email, password } = req.body;
+  const { email, password } = req.body;   
 
   req.app.locals.db.collection('users').findOne({"email": email})  
   .then(result => {
@@ -50,6 +51,24 @@ router.post('/login', function(req, res, next) {
       res.status(500).json("Can't find user")
     }
     else if (crypto.SHA3(password).toString() == result.password) {
+      if (email == 'admin@mail.com') {
+        res.cookie('adminCookie', process.env.ADMIN_KEY, {
+          maxAge: 1000000,
+          httpOnly: true,
+          secure: true, 
+          withCredentials: 'include',
+          path: "/",
+        })
+
+      } else {
+        res.cookie('loginCookie', 'loggedIn', {
+          maxAge: 1000000,
+          httpOnly: true,
+          secure: true, 
+          withCredentials: 'include',
+          path: "/",
+        })
+      }      
       res.status(200).json(result)
     }
     else {

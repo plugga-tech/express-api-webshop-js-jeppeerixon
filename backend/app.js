@@ -4,10 +4,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var categoriesRouter = require('./routes/categories');
 var productsRouter = require('./routes/products');
 var ordersRouter = require('./routes/orders');
 var cors = require('cors');
-require('dotenv').config()
+require('dotenv').config();
 
 var app = express();
 var base = '/api';
@@ -36,5 +37,6 @@ app.use('/', indexRouter);
 app.use(base + '/users', usersRouter);
 app.use(base + '/products', productsRouter);
 app.use(base + '/orders', ordersRouter);
+app.use(base + '/categories', categoriesRouter);
 
 module.exports = app;

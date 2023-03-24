@@ -1,16 +1,25 @@
 var express = require('express');
 var router = express.Router();
+require('dotenv').config();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('ORDERS');
 });
 
-router.get('/all', function(req, res, next) {  
-  req.app.locals.db.collection('orders').find().toArray()
-  .then(results => {
-    res.status(200).json(results)
-  })
+router.get('/all/:token', function(req, res, next) {
+  let token = req.params.token
+
+  if (token == process.env.ADMIN_KEY) {
+    req.app.locals.db.collection('orders').find().toArray()
+    .then(results => {
+      res.status(200).json(results)
+    })
+  } else {
+    res.status(401).json({message: "it's a no for me dawg"})
+  }
+
+  
 });
 
 router.post('/add', function(req, res, next) {

@@ -28,12 +28,12 @@ POST http://localhost:3000/api/users/add
 Content-Type: application/json
 
 {
-  "name": "jesper eriksson",
-  "email": "jesper@mail.com",
-  "password": "jesper"
+  "name": "admin",
+  "email": "admin@mail.com",
+  "password": "admin"
 }
 
-// EJ KLAR - KRYPTERA LÖSENORD
+// KLAR ** VG-NIVÅ ** KLAR
 
 ###
 
@@ -45,7 +45,7 @@ Content-Type: application/json
   "email": "elin@mail.com",
   "password": "elin"
 }
-// 401 KLAR - KRYPTERAT LÖSENORD EJ KLART!
+// KLAR ** VG-NIVÅ ** KLAR
 
 ###
 
@@ -98,7 +98,7 @@ POST http://localhost:3000/api/categories/add
 Content-Type: application/json
 
 {
-  "name": "Kategori 1",
+  "name": "Kaffe",
   "token": "1234key1234"
 }
 
@@ -114,12 +114,16 @@ GET http://localhost:3000/api/categories
 //
 
 // HÄMTA ALLA ORDERS, KEY MÅSTE ANGES FÖR ATT FÅ TILLGÅNG TILL ORDERS
-GET http://localhost:3000/api/orders/all/ // API TOKEN
+GET http://localhost:3000/api/orders/all/1234key1234
+
+// KLAR ** VG-NIVÅ ** KLAR
 
 ###
 
 // HÄMTA ALLA ORDER, FEL KEY // SKALL MISSLYCKAS
-GET http://localhost:3000/api/orders/all/ // TEST MED FEL TOKEN
+GET http://localhost:3000/api/orders/all/blablabla
+
+// KLAR ** VG-NIVÅ ** KLAR
 
 ###
 
@@ -140,6 +144,8 @@ Content-Type: application/json
     }
   ]
 }
+
+// KLAR ** VG-NIVÅ ** KLAR
 
 ###
 
