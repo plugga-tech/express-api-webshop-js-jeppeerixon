@@ -19,7 +19,7 @@ router.post('/add', function(req, res, next) {
           res.status(200).json(results)
         })
       } else {
-        res.status(401).json({message: "it's a no for me dawg"})
+        res.status(401).json({message: "access denied!"})
     }
 
     console.log(req.body)

@@ -62,7 +62,7 @@ GET http://localhost:3000/api/products
 ###
 
 // HÄMTA SPECIFIK PRODUKT
-GET http://localhost:3000/api/products/ // ID PÅ EN SPECIFIK PRODUKT
+GET http://localhost:3000/api/products/64207efa4f00e6c159091b20
 
 // KLAR ** VG-NIVÅ ** KLAR
 
@@ -74,21 +74,23 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Produkt 2",
-  "description": "Beskrivning av produkt 1",
-  "price": 100,
-  "lager": 10,
-  "category": "// ID PÅ EN SPECIFIK KATEGORI",
+  "name": "Bananer",
+  "description": "Eko besprutade",
+  "price": 29,
+  "lager": 100,
+  "category": "64207cd0346956c302b286ed",
   "token": "1234key1234"
 }
+
+// KLAR ** VG-NIVÅ ** KLAR
 
 ###
 
 // HÄMTA ALLA PRODUKTER FÖR EN SPECIFIK KATEGORI
-GET http://localhost:3000/api/products/category/ // ID PÅ EN SPECIFIK KATEGORI
+GET http://localhost:3000/api/products/category/64207cd0346956c302b286ed
 ###
 
-//
+// KLAR ** VG-NIVÅ ** KLAR
 // API ENDPOINTS KATEGORI
 // 
 
@@ -98,9 +100,11 @@ POST http://localhost:3000/api/categories/add
 Content-Type: application/json
 
 {
-  "name": "Kaffe",
-  "token": "1234key1234"
+  "name": "Övrigt",
+  "token": "1234key1234" 
 }
+
+// KLAR ** VG-NIVÅ ** KLAR
 
 ###
 

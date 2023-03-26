@@ -1,8 +1,10 @@
 import './style.css';
 
 //Global variables
-let userId = '';
-let cart = []
+let userId = JSON.parse(localStorage.getItem("userId")) || '';
+let loggedIn = JSON.parse(localStorage.getItem("loggedIn")) || '';
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let categoryNames = []
 
 function init() {
   let loginUserBtn = document.querySelector("#loginButton");
@@ -22,6 +24,8 @@ function init() {
 
   let showOrderButton = document.querySelector('#showOrderButton')
   showOrderButton.addEventListener('click', displayMyOrderButtonPress);
+
+  getAllCategories()
 
   displayAllProducts()
 
@@ -46,11 +50,13 @@ function handleLoginButtonPress() {
     })
     .then(res => res.json())
     .then(data => {
-          console.log(data)
+          //console.log(data)
           if (data.email) {
             openWebShop(data.name)
             userId = data._id
-            console.log(userId)
+            cart = JSON.parse(localStorage.getItem("cart"))
+            localStorage.setItem("loggedIn", JSON.stringify(data.name))
+            localStorage.setItem("userId", JSON.stringify(userId))
 
           }
           else {
@@ -81,7 +87,7 @@ function handleRegisterButtonPress() {
     })
     .then(res => res.json())
     .then(data => {
-          console.log(data)
+          //console.log(data)
           if (data.acknowledged) {
             alert('created new user - please log in to continue')
           }
@@ -102,6 +108,7 @@ function openWebShop(userName) {
 }
 
 function displayUserInfo(string) {
+  console.log(string)
   let userInfoCart = document.querySelector('#userInfoCart');
   userInfoCart.style.display = 'block'
   let nameInfo = document.querySelector('#nameInfo');
@@ -120,27 +127,36 @@ function displayAllProducts() {
     })
     .then(res => res.json())
     .then(data => {
-          console.log(data)
+          //console.log(data)
           if (data == null) {
             displayProdcutsDiv.innerHTML = 'no products to display'
           }
           else {
+
             let printHTML = ''
 
-            for (let i in data) { 
-              printHTML += `<li> ${data[i].name} ${data[i].description} ${data[i].price} kr 
+            for (let i in data) {
+              
+              let catNam = categoryNames.indexOf(data[i].category)
+              //printa html
+              printHTML += `<li> ${data[i].name} ${categoryNames[catNam-1]} ${data[i].price} kr 
               <button class='addProductButton' value=${data[i]._id}>+</button> </li>`
             }
         
             displayProdcutsDiv.innerHTML = printHTML;
 
             setUpClicks()
-
           }        
-
     });
+}
 
-    
+function loadLocalStorage() {
+  userId = JSON.parse(localStorage.getItem("userId"))
+  loggedIn = JSON.parse(localStorage.getItem("loggedIn"))
+  openWebShop(loggedIn);
+  cart = JSON.parse(localStorage.getItem("cart"))
+  const cartInfo = document.querySelector('#cartInfo')
+  cartInfo.innerHTML = cart.length + ' products'
 
 }
 
@@ -155,6 +171,7 @@ function handleAddProductClick(e) {
   const cartInfo = document.querySelector('#cartInfo')
   cart.push(e.target.value);
   cartInfo.innerHTML = cart.length + ' products'
+  localStorage.setItem("cart", JSON.stringify(cart))
 }
 
 function calculateCartOrder() {
@@ -190,7 +207,7 @@ function handleCartOrderButtonPress() {
     })
     .then(res => res.json())
     .then(data => {
-          console.log(data)
+          //console.log(data)
           if (data.acknowledged) {
             alert('Thank you for your order!')
           }
@@ -198,6 +215,9 @@ function handleCartOrderButtonPress() {
             alert('Something went wrong!')
           }
     });
+    cart = [];
+    const cartInfo = document.querySelector('#cartInfo')
+    cartInfo.innerHTML = cart.length + ' products'
 }
 
 function displayMyOrderButtonPress() {
@@ -217,7 +237,7 @@ function displayMyOrderButtonPress() {
     })
     .then(res => res.json())
     .then(data => {
-          console.log(data)
+          //console.log(data)
           if (data == null) {
             displayOrders.innerHTML = 'no products to display'
           }
@@ -225,9 +245,8 @@ function displayMyOrderButtonPress() {
             let printHTML = ''
 
             for (let i in data) {
-              let bajs = data[i].products.map(x => x)
-              console.log(bajs)
-              printHTML += `<li> Order: ${data[i]._id} Prod: ${JSON.stringify(bajs)} </li>`
+              let basicString = data[i].products.map(x => x)
+              printHTML += `<li> OrderNr: ${data[i]._id} Prodcuts: ${JSON.stringify(basicString)} </li>`
             }
         
             displayOrders.innerHTML = printHTML;
@@ -237,7 +256,88 @@ function displayMyOrderButtonPress() {
 
 }
 
+function getAllCategories() {
+  let displayCategoriesDiv = document.querySelector('#displayCategories');
+  
+  fetch("http://localhost:3000/api/categories", {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+    })
+    .then(res => res.json())
+    .then(data => {
+          //console.log(data)
+          if (data == null) {
+            displayCategoriesDiv.innerHTML = 'no categories yet'
+          }
+          else {
+            let printHTML = ''
+
+            for (let i in data) { 
+              printHTML += `<button class='categoryButton' value=${data[i]._id}>${data[i].name}</button>`
+              categoryNames.push(data[i].name)
+              categoryNames.push(data[i]._id)
+            }
+        
+            displayCategoriesDiv.innerHTML = printHTML;
+            console.log(categoryNames)
+
+            setUpCategoriesClick() // för filter funktion
+
+          }        
+    });
+}
+
+function setUpCategoriesClick() {
+  const categoryButtons = document.querySelectorAll('.categoryButton')
+  for (let i = 0; i < categoryButtons.length; i++) {
+    categoryButtons[i].addEventListener('click', clickedCategory)
+  }
+}
+
+function clickedCategory(e) {
+  let categoryClicked = e.target.value
+
+  let displayProdcutsDiv = document.querySelector('#displayProdcuts');
+  
+  fetch(`http://localhost:3000/api/products/category/${categoryClicked}`, {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+    })
+    .then(res => res.json())
+    .then(data => {
+          //console.log(data)
+          if (data == null) {
+            displayProdcutsDiv.innerHTML = 'no products to display'
+          }
+          else {
+
+            let printHTML = ''
+
+            for (let i in data) {
+              
+              let catNam = categoryNames.indexOf(data[i].category)
+              //printa html
+              printHTML += `<li> ${data[i].name} ${categoryNames[catNam-1]} ${data[i].price} kr 
+              <button class='addProductButton' value=${data[i]._id}>+</button> </li>`
+            }
+        
+            displayProdcutsDiv.innerHTML = printHTML;
+
+            setUpClicks()
+
+          }        
+
+    });
+
+}
+
 init()
+
+loadLocalStorage();
 
 
 
