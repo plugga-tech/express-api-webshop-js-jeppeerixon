@@ -4,7 +4,7 @@ import './style.css';
 let userId = JSON.parse(localStorage.getItem("userId")) || '';
 let loggedIn = JSON.parse(localStorage.getItem("loggedIn")) || '';
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let categoryNames = []
+let categoryNames = [];
 
 function init() {
   let loginUserBtn = document.querySelector("#loginButton");
@@ -54,7 +54,7 @@ function handleLoginButtonPress() {
           if (data.email) {
             openWebShop(data.name)
             userId = data._id
-            cart = JSON.parse(localStorage.getItem("cart"))
+            cart = JSON.parse(localStorage.getItem("cart")) || [];
             localStorage.setItem("loggedIn", JSON.stringify(data.name))
             localStorage.setItem("userId", JSON.stringify(userId))
 
@@ -151,10 +151,12 @@ function displayAllProducts() {
 }
 
 function loadLocalStorage() {
-  userId = JSON.parse(localStorage.getItem("userId"))
-  loggedIn = JSON.parse(localStorage.getItem("loggedIn"))
-  openWebShop(loggedIn);
-  cart = JSON.parse(localStorage.getItem("cart"))
+  userId = JSON.parse(localStorage.getItem("userId")) || '';
+  loggedIn = JSON.parse(localStorage.getItem("loggedIn")) || '';
+  if (loggedIn != '') {
+    openWebShop(loggedIn);
+  }  
+  cart = JSON.parse(localStorage.getItem("cart")) || [];
   const cartInfo = document.querySelector('#cartInfo')
   cartInfo.innerHTML = cart.length + ' products'
 
@@ -168,8 +170,9 @@ function setUpClicks() {
 }
 
 function handleAddProductClick(e) {
-  const cartInfo = document.querySelector('#cartInfo')
+  console.log('click' + e.target.value)
   cart.push(e.target.value);
+  const cartInfo = document.querySelector('#cartInfo')
   cartInfo.innerHTML = cart.length + ' products'
   localStorage.setItem("cart", JSON.stringify(cart))
 }
