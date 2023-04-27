@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const { ObjectId } = require("mongodb");
 require('dotenv').config();
 
 /* GET users listing. */
@@ -22,14 +23,26 @@ router.get('/all/:token', function(req, res, next) {
   
 });
 
-router.post('/add', function(req, res, next) {
+router.post('/add', async function(req, res, next) {
   console.log(req.body)
+
+  const { products } = req.body;
+
+  for (const prod of products) {
+    const test = await req.app.locals.db.collection('products').updateOne({ _id: new ObjectId(prod.productId) }, { $inc: {lager: -prod.quantity } }, { upsert: true })
+    .then(result => {
+      console.log(`${result.matchedCount} document matched the filter, updated ${result.modifiedCount} document(s)`);
+    })
+    
+  };
 
   req.app.locals.db.collection('orders').insertOne(req.body)
   .then(result => {
     console.log("New order added")
     res.status(200).json(result)
   })
+
+
 });
 
 router.post('/user', function(req, res, next) {
